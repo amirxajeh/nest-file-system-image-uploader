@@ -1,4 +1,9 @@
-import { SetMetadata } from "@nestjs/common";
-import { DiskStorageOptions } from "multer";
+import { applyDecorators, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
-export const Upload = (configs: DiskStorageOptions) => SetMetadata('upload', configs)
+export function Upload(fieldName: string, options?: MulterOptions) {
+  return applyDecorators(
+    UseInterceptors(FileInterceptor(fieldName, options))
+  );
+}
